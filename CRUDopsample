@@ -1,0 +1,42 @@
+
+CRUD operations MongoDB sample 
+
+Create
+	collection.insertOne(new Document("name","Akshay").append("surname","Shah"));
+Read
+	collection.find("name","Akshay").first() -> Retrieves the first document which matches the query.
+	Bson Filters are generally used to get the specific document
+		sort ( -1->desvc ,1->asc)
+		eq/grt/lt.etc (All operators)
+
+	/*Sample code*/
+	Bson sort = new Document("student_id",1).append("score",1);
+	Bson filter=Filters.eq("type","homework");
+	Bson projection=new Document("student_id",1).append("_id", 0).append("score",1);
+
+	Document first=collection.find(filter).sort(sort).skip(1).limit(10).projection(projection).first();
+
+	List<Document> documents=collection.find(filter).sort(sort).skip(0).limit(0).projection(projection).into(new ArrayList<Document>());
+
+
+Update
+	We use the shell representation in the code itself.
+
+	collection.updateOne(eq("_id",9),new Document("$set",new Document("x",20)),new UpdateOptions().upsert(true/false));   // If we need to update a document while inserting missing the field , upsert=true.
+
+	collection.updateMany(gt("_id",5),new Document("$inc",new Document("x",1)))
+
+	
+
+
+	db.students.update({},{$pull:{ scores:{'type':"exam"}}},{multi:true})
+
+	db.students.update({"_id":19},{$pull:{ scores:{'type':"homework",'score':49.43132782777443}}},{multi:true})
+
+db.posts.update({permalink:'a'},{comment:{$push:{}}})	
+
+
+
+db.stuff.remove({thing:apple},{justOne:true})
+
+	
